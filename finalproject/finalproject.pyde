@@ -1,11 +1,6 @@
 add_library('sound')
 import os
-
 path = os.getcwd()
-##So I realized the lines for ceiling and ground are not needed as we are 
-#not worried about gravity in this but merely just where the pictures will be placed
-#so just use the self.ceiling and self.ground as a basis on where it should and could
-#be placed
 
 class Game:
     def __init__(self):
@@ -23,6 +18,10 @@ def createGame(self):
         self.qs.append(loadImage(path+'/images/question'+str(i+1)+'.png'))
         for j in range(4):
             self.answers.append(loadImage(path+'/images/q'+str(i+1)+'a'+str(j+1)+'.png'))
+ #so basically in these for loops we would have the questions, 
+ #10 of them to begin with, and 4 possible answers for each
+ #also, i renamed the pictures so it fits the loadImage thing 
+ #so we don't have to do it manually for each level
 
     def display(self):
         self.state == "play"

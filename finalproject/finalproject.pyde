@@ -16,8 +16,13 @@ class Game:
     def createGame(self):
         for i in range(10): 
             self.qs.append(loadImage(path+'/images/question'+str(i+1)+'.png'))
+<<<<<<< HEAD
         for j in range(4):
             self.answers.append(loadImage(path+'/images/q'+str(i+1)+'a'+str(j+1)+'.png'))
+=======
+            for j in range(4):
+                self.answers.append(loadImage(path+'/images/q'+str(i+1)+'a'+str(j+1)+'.png'))
+>>>>>>> 649e6766eb9a875e52827c6e160dd210ca6f1ec6
  #so basically in these for loops we would have the questions, 
  #10 of them to begin with, and 4 possible answers for each
  #also, i renamed the pictures so it fits the loadImage thing 

@@ -30,7 +30,7 @@ g = Game()
 def setup():
     size(g.w,g.h)
     background(0)
-    g.createGame
+    g.createGame()
 
 def draw():
     image(g.bgImg, 0,0)

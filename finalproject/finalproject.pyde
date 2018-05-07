@@ -31,8 +31,11 @@ class Game:
             image(self.answers[1],self.w//5.5,self.ground//1.2)
             image(self.answers[2],self.w//5.7*3,self.ceiling*3)
             image(self.answers[3],self.w//5.7*3,self.ground//1.2)
+<<<<<<< HEAD
         else:
             pass
+=======
+>>>>>>> ccf7342785ad2df94decc88db02c365f9040a68d
     
         
 g = Game()
@@ -63,3 +66,7 @@ def mouseClicked():
         g.state='play'
     if g.w//5.5<=mouseX<=g.w//5.5+300 and g.ground//1.2<=mouseY<=g.ground//1.2+150:
         g.nextLevel = True
+<<<<<<< HEAD
+=======
+        
+>>>>>>> ccf7342785ad2df94decc88db02c365f9040a68d

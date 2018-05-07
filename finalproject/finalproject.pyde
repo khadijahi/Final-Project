@@ -7,30 +7,32 @@ class Game:
         self.w = 1029
         self.h = 600
         self.ground = 600-100
-        self.ceiling = 600-500
+        self.ceiling = 600-550
         self.state = "menu"
+        self.lvls=[]
         self.qs=[]
         self.answers=[]
         self.bgImg = loadImage(path+"/images/background.png") 
+        self.nextLevel = False
         
     def createGame(self):
         for i in range(10): 
+            self.lvls.append(loadImage(path+'/images/level'+str(i+1)+'.png'))
             self.qs.append(loadImage(path+'/images/question'+str(i+1)+'.png'))
-<<<<<<< HEAD
-        for j in range(4):
-            self.answers.append(loadImage(path+'/images/q'+str(i+1)+'a'+str(j+1)+'.png'))
-=======
             for j in range(4):
                 self.answers.append(loadImage(path+'/images/q'+str(i+1)+'a'+str(j+1)+'.png'))
->>>>>>> 649e6766eb9a875e52827c6e160dd210ca6f1ec6
- #so basically in these for loops we would have the questions, 
- #10 of them to begin with, and 4 possible answers for each
- #also, i renamed the pictures so it fits the loadImage thing 
- #so we don't have to do it manually for each level
 
     def display(self):
         self.state == "play"
-
+        while self.nextLevel == False:
+            image(self.qs[0],self.w//2-(216//2),self.ceiling)
+            image(self.lvls[0],0,0,100,100)
+            image(self.answers[0],self.w//5.5,self.ceiling*3)
+            image(self.answers[1],self.w//5.5,self.ground//1.2)
+            image(self.answers[2],self.w//5.7*3,self.ceiling*3)
+            image(self.answers[3],self.w//5.7*3,self.ground//1.2)
+    
+        
 g = Game()
 def setup():
     size(g.w,g.h)
@@ -57,3 +59,6 @@ def draw():
 def mouseClicked():
     if g.state == 'menu' and g.w//2-80 < mouseX < g.w//2+80 and g.h//2-30 < mouseY < g.h//2+10:
         g.state='play'
+    if g.w//5.5<=mouseX<=g.w//5.5+300 and g.ground//1.2<=mouseY<=g.ground//1.2+150:
+        g.nextLevel = True
+        

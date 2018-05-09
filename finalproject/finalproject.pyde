@@ -12,6 +12,7 @@ class Game:
         self.lvls=[]
         self.qs=[]
         self.answers=[]
+        self.title =  loadImage(path+"/images/title.png")
         self.bgImg = loadImage(path+"/images/background.png") 
         self.lvlNum = 0
         self.gameOverImg = loadImage(path+"/images/ending.gif")
@@ -87,6 +88,8 @@ def draw():
         stroke(0)
         rect(g.w//2-80, g.h//2-30,160,40)
     elif g.state == 'play':
+        image(g.title,g.w,g.h)
+        time.sleep(0.2)
         image(g.bgImg,g.w,g.h)
         g.display()
         

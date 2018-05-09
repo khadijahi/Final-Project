@@ -8,17 +8,17 @@ class Game:
         self.h = 600
         self.ground = 600-100
         self.ceiling = 600-550
-        self.state = "menu"
+        self.state = "start"
         self.lvls=[]
         self.qs=[]
         self.answers=[]
         self.bgImg = loadImage(path+"/images/background.png") 
         self.lvlNum = 0
-        self.gameOverImg = loadImage(path+"/images/ending.gif")
-        self.nextLvlImg = loadImage(path+"/images/ending4.jpg")
-        self.gameOver = 0
+        self.gameOverImg = loadImage(path+"/images/ending1.png")
+        self.winImg1 = loadImage(path+"/images/congrats0.png")
+        self.winImg2 = loadImage(path+"/images/congrats1.png")
         self.helpingImg = loadImage(path+"/images/pizza.png")
-        self.openingImg = loadImage(path+"/images/ooening.png")
+        self.openingImg = loadImage(path+"/images/opening.png")
 
         
     def createGame(self):
@@ -29,11 +29,6 @@ class Game:
                 self.answers.append(loadImage(path+'/images/q'+str(i+1)+'a'+str(j+1)+'.png'))
 
     def display(self):
-        #if self.gameOver == 1:
-         #   image(g.bgImg, 0,0)
-          #  image(self.gameOverImg,200,200)
-            #time.sleep(5)
-            #g.state = 'menu'
         self.level()
 
         
@@ -80,39 +75,111 @@ def setup():
 
 def draw():
     image(g.bgImg, 0,0)
-    if g.state=='menu':
-        background(0)
+    if g.state == "start":
+        background(234,29,44)
+        image(g.openingImg,250,0)
+        #time.sleep(2)
+        #g.state="menu"        
+    elif g.state=='menu':
+        background(234,29,44)
         if g.state == 'menu' and g.w//2-80 < mouseX < g.w//2+80 and g.h//2-30 < mouseY < g.h//2+10:
-            fill(219,112,147)
+            fill(0)
         else:
             fill(255)
         textSize(32)
         text("Play Game",g.w//2-80,g.h//2)
         noFill()
-        stroke(0)
+        stroke(234,29,44)
         rect(g.w//2-80, g.h//2-30,160,40)
+    
     elif g.state == 'play':
         image(g.bgImg,g.w,g.h)
         g.display()
         
-def mouseClicked():
-    if g.state == 'menu' and g.w//2-80 < mouseX < g.w//2+80 and g.h//2-30 < mouseY < g.h//2+10:
-        g.state='play'
-    if g.state != 'menu'and g.lvlNum==0 and g.w//5.5<=mouseX<=g.w//5.5+300 and g.ground//1.2<=mouseY<=g.ground//1.2+150:
-        #print("works")
-        time.sleep(0.2)
-        g.lvlNum += 1
-    elif g.state != 'menu'and g.lvlNum==1 and g.w//5.5<=mouseX<=g.w//5.5+50+144 and g.ceiling*3<=mouseY<=g.ceiling*3+135:
-        g.lvlNum += 1
-        #print("works")
-    elif g.state != 'menu'and g.lvlNum==2 and g.w//5.5<=mouseX<=g.w//5.5+50+104 and g.ceiling*3<=mouseY<=g.ceiling*3+106:
-        g.lvlNum += 1
-        #print("works")
-    elif g.state != 'menu'and g.lvlNum==3 and ((g.w//5.5<=mouseX<=g.w//5.5+187 and g.ground//1.2-50<=mouseY<=g.ground//1.2-50+187) or (g.w//5.7*3+100<=mouseX<=g.w//5.7*3+100+200 and g.ceiling*3<=mouseY<=g.ceiling*3+178)):
-        #print("works")
-        g.lvlNum += 1
-    elif g.state != 'menu'and g.lvlNum==4 and g.w//5.7*3+100<=mouseX<=g.w//5.7*3+100+145 and g.ground//1.2-50<=mouseY<=g.ground//1.2-50+134:
-        g.state = "menu"
-        g.lvlNum = 0
-
+    elif g.state == "game over":
+        background(100,100,100)
+        image(g.gameOverImg,400,200)
+        #g.state = 'menu'
+        #g.display()
         
+    elif g.state == "win":
+        background(255,255,255)
+        #image(g.winImg1,200,200)
+        #image(g.winImg2,200,400)
+        
+    elif g.state == "play again?":
+        background(234,29,44)
+        textSize(50)
+        text("Play again?",g.w//2-100,g.h//2-100)
+        if  g.w//2+110 < mouseX < g.w//2+110+70 and g.h//2+20 < mouseY < g.h//2+20+40:
+            fill(0,0,255)
+        elif g.w//2-130 < mouseX < g.w//2-130+80 and g.h//2+20 < mouseY < g.h//2+20+40:
+            fill(0,255,0)
+        else:
+            fill(255)
+            
+        textSize(30)
+        
+        text("No.",g.w//2+120,g.h//2+50)
+        noFill()
+        stroke(234,29,44)
+        rect(g.w//2+110,g.h//2+20,70,40)
+        
+        text("Yes!",g.w//2-120,g.h//2+50)        
+        noFill()
+        stroke(234,29,44)
+        rect(g.w//2-130,g.h//2+20,80,40)
+                   
+    
+        
+def mouseClicked():
+    if g.state == "start":
+        if mouseClicked:
+            g.state = 'menu'
+    elif g.state == 'menu' and g.w//2-80 < mouseX < g.w//2+80 and g.h//2-30 < mouseY < g.h//2+10:
+        g.state='play'
+    elif g.state == 'play':
+        if g.lvlNum==0:
+            if g.w//5.5<=mouseX<=g.w//5.5+300 and g.ground//1.2<=mouseY<=g.ground//1.2+150:
+                #print("works")
+                time.sleep(0.2)
+                g.lvlNum += 1
+            else:
+                g.state ="game over"
+        elif g.lvlNum==1:
+            if g.w//5.5<=mouseX<=g.w//5.5+50+144 and g.ceiling*3<=mouseY<=g.ceiling*3+135:
+                g.lvlNum += 1
+                #print("works")
+            else:
+                g.state ="game over"
+        elif g.lvlNum==2:
+            if g.w//5.5<=mouseX<=g.w//5.5+50+104 and g.ceiling*3<=mouseY<=g.ceiling*3+106:
+                g.lvlNum += 1
+                #print("works")
+            else:
+                g.state ="game over"
+        elif g.lvlNum==3:
+            if (g.w//5.5<=mouseX<=g.w//5.5+187 and g.ground//1.2-50<=mouseY<=g.ground//1.2-50+187) or (g.w//5.7*3+100<=mouseX<=g.w//5.7*3+100+200 and g.ceiling*3<=mouseY<=g.ceiling*3+178):
+                #print("works")
+                g.lvlNum += 1
+            else:
+                g.state ="game over"
+        elif g.lvlNum==4: 
+            if g.w//5.7*3+100<=mouseX<=g.w//5.7*3+100+145 and g.ground//1.2-50<=mouseY<=g.ground//1.2-50+134:
+                g.state = "win"
+                g.lvlNum = 0
+            else:
+                g.state ="game over"    
+    elif g.state == "game over":
+        if mouseClicked:
+            g.state = 'play again?'
+    elif g.state == "win":
+        if mouseClicked:
+            g.state = 'play again?'
+    elif g.state == "play again?":
+        if g.w//2+110 < mouseX < g.w//2+110+70 and g.h//2+20 < mouseY < g.h//2+20+40:
+            exit()
+        elif g.w//2-130 < mouseX < g.w//2-130+80 and g.h//2+20 < mouseY < g.h//2+20+40:
+            g.lvlNum = 0
+            g.state = "play"
+            

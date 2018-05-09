@@ -1,4 +1,3 @@
-add_library('sound')
 import os, time
 path = os.getcwd()
 
@@ -14,9 +13,9 @@ class Game:
         self.answers=[]
         self.bgImg = loadImage(path+"/images/background.png") 
         self.lvlNum = 0
-        self.gameOverImg = loadImage(path+"/images/ending1.png")
-        self.winImg1 = loadImage(path+"/images/congrats0.png")
-        self.winImg2 = loadImage(path+"/images/congrats1.png")
+        self.gameOverImg = loadImage(path+"/images/ending.gif")
+        self.winImg = loadImage(path+"/images/congrats.png")
+        #self.winImg2 = loadImage(path+"/images/congratss.png")
         self.helpingImg = loadImage(path+"/images/pizza.png")
         self.openingImg = loadImage(path+"/images/opening.png")
 
@@ -78,8 +77,11 @@ def draw():
     if g.state == "start":
         background(234,29,44)
         image(g.openingImg,250,0)
+        textSize(20)
+        text("Press anywhere",10,g.h-20)
         #time.sleep(2)
-        #g.state="menu"        
+        #g.state="menu"  
+              
     elif g.state=='menu':
         background(234,29,44)
         if g.state == 'menu' and g.w//2-80 < mouseX < g.w//2+80 and g.h//2-30 < mouseY < g.h//2+10:
@@ -97,20 +99,20 @@ def draw():
         g.display()
         
     elif g.state == "game over":
-        background(100,100,100)
-        image(g.gameOverImg,400,200)
+        background(255,255,255)
+        image(g.gameOverImg,300,100)
         #g.state = 'menu'
         #g.display()
         
     elif g.state == "win":
         background(255,255,255)
-        #image(g.winImg1,200,200)
+        image(g.winImg,300,180)
         #image(g.winImg2,200,400)
         
     elif g.state == "play again?":
         background(234,29,44)
         textSize(50)
-        text("Play again?",g.w//2-100,g.h//2-100)
+        text("Play again?",g.w//2-110,g.h//2-100)
         if  g.w//2+110 < mouseX < g.w//2+110+70 and g.h//2+20 < mouseY < g.h//2+20+40:
             fill(0,0,255)
         elif g.w//2-130 < mouseX < g.w//2-130+80 and g.h//2+20 < mouseY < g.h//2+20+40:
@@ -128,6 +130,7 @@ def draw():
         text("Yes!",g.w//2-120,g.h//2+50)        
         noFill()
         stroke(234,29,44)
+        
         rect(g.w//2-130,g.h//2+20,80,40)
                    
     
@@ -182,4 +185,4 @@ def mouseClicked():
         elif g.w//2-130 < mouseX < g.w//2-130+80 and g.h//2+20 < mouseY < g.h//2+20+40:
             g.lvlNum = 0
             g.state = "play"
-            
+          

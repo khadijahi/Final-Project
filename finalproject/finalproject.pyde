@@ -9,16 +9,19 @@ class Game:
         self.ground = 600-100
         self.ceiling = 600-550
         self.state = "menu"
+        self.clicked = False
         self.lvls=[]
         self.qs=[]
         self.answers=[]
+        self.game= False
         self.bgImg = loadImage(path+"/images/background.png") 
         self.lvlNum = 0
         self.gameOverImg = loadImage(path+"/images/ending.gif")
         self.nextLvlImg = loadImage(path+"/images/ending4.jpg")
         self.gameOver = 0
         self.helpingImg = loadImage(path+"/images/pizza.png")
-        self.openingImg = loadImage(path+"/images/ooening.png")
+        self.titleImg = loadImage(path+"/images/title.png")
+
 
         
     def createGame(self):
@@ -27,7 +30,7 @@ class Game:
             self.qs.append(loadImage(path+'/images/question'+str(i+1)+'.png'))
             for j in range(4):
                 self.answers.append(loadImage(path+'/images/q'+str(i+1)+'a'+str(j+1)+'.png'))
-
+            self.nextlvlMusic= SoundFile(this,path+"/images/win.mp3")
     def display(self):
         #if self.gameOver == 1:
          #   image(g.bgImg, 0,0)
@@ -45,6 +48,7 @@ class Game:
             image(self.answers[self.lvlNum*4+1],self.w//5.5,self.ground//1.2)
             image(self.answers[self.lvlNum*4+2],self.w//5.7*3,self.ceiling*3)
             image(self.answers[self.lvlNum*4+3],self.w//5.7*3,self.ground//1.2)
+           
         if self.lvlNum == 1:
             image(self.qs[self.lvlNum],self.w//2-(250//2),self.ceiling)
             image(self.answers[self.lvlNum*4+0],self.w//5.5+50,self.ceiling*3)
@@ -58,6 +62,7 @@ class Game:
             image(self.answers[self.lvlNum*4+1],self.w//5.5,self.ground//1.2)
             image(self.answers[self.lvlNum*4+2],self.w//5.7*3+200,self.ceiling*3)
             image(self.answers[self.lvlNum*4+3],self.w//5.7*3+200,self.ground//1.2)
+            #self.nextlvlMusic.play()
         if self.lvlNum == 3:
             image(self.qs[self.lvlNum],self.w//2-(180//2),self.ceiling)
             image(self.answers[self.lvlNum*4+0],self.w//5.5,self.ceiling*3)
@@ -71,6 +76,13 @@ class Game:
             image(self.answers[self.lvlNum*4+2],self.w//5.7*3+100,self.ceiling*3)
             image(self.answers[self.lvlNum*4+3],self.w//5.7*3+100,self.ground//1.2-50)
     
+    def gameover(self):
+        self.state = "done"
+        self.game = True
+        return
+        
+    
+        
         
 g = Game()
 def setup():
@@ -92,19 +104,24 @@ def draw():
         stroke(0)
         rect(g.w//2-80, g.h//2-30,160,40)
     elif g.state == 'play':
+        # image(g.titleImg,200, 200)
+        # g.display()
         image(g.bgImg,g.w,g.h)
         g.display()
-        
+    elif g.state == "done":
+        print("the fuck")
+        image(g.gameOverImg,g.w,g.h)
+        g.display()
 def mouseClicked():
     if g.state == 'menu' and g.w//2-80 < mouseX < g.w//2+80 and g.h//2-30 < mouseY < g.h//2+10:
         g.state='play'
-    if g.state != 'menu'and g.lvlNum==0 and g.w//5.5<=mouseX<=g.w//5.5+300 and g.ground//1.2<=mouseY<=g.ground//1.2+150:
-        #print("works")
-        time.sleep(0.2)
-        g.lvlNum += 1
+    if g.state != 'menu' and g.lvlNum==0 :
+        if g.w//5.5<=mouseX<=g.w//5.5+300 and g.ground//1.2<=mouseY<=g.ground//1.2+150:
+            print("works1")
+            g.lvlNum += 1
     elif g.state != 'menu'and g.lvlNum==1 and g.w//5.5<=mouseX<=g.w//5.5+50+144 and g.ceiling*3<=mouseY<=g.ceiling*3+135:
         g.lvlNum += 1
-        #print("works")
+        print("works2")
     elif g.state != 'menu'and g.lvlNum==2 and g.w//5.5<=mouseX<=g.w//5.5+50+104 and g.ceiling*3<=mouseY<=g.ceiling*3+106:
         g.lvlNum += 1
         #print("works")
@@ -114,5 +131,6 @@ def mouseClicked():
     elif g.state != 'menu'and g.lvlNum==4 and g.w//5.7*3+100<=mouseX<=g.w//5.7*3+100+145 and g.ground//1.2-50<=mouseY<=g.ground//1.2-50+134:
         g.state = "menu"
         g.lvlNum = 0
-
-        
+    else:
+        g.game = "done"
+        #print(g.game)

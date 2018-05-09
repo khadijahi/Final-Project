@@ -1,5 +1,5 @@
 add_library('sound')
-import os
+import os, time
 path = os.getcwd()
 
 class Game:
@@ -13,7 +13,12 @@ class Game:
         self.qs=[]
         self.answers=[]
         self.bgImg = loadImage(path+"/images/background.png") 
-        self.nextLevel = False
+        self.lvlNum = 0
+        self.gameOverImg = loadImage(path+"/images/ending.gif")
+        self.nextLvlImg = loadImage(path+"/images/ending4.jpg")
+        self.gameOver = 0
+        self.helpingImg = loadImage(path+"/images/pizza.png")
+
         
     def createGame(self):
         for i in range(10): 
@@ -23,18 +28,43 @@ class Game:
                 self.answers.append(loadImage(path+'/images/q'+str(i+1)+'a'+str(j+1)+'.png'))
 
     def display(self):
+        #if self.gameOver == 1:
+         #   image(g.bgImg, 0,0)
+          #  image(self.gameOverImg,200,200)
+            #time.sleep(5)
+            #g.state = 'menu'
         self.state == "play"
-        while self.nextLevel == False:
-            image(self.qs[0],self.w//2-(216//2),self.ceiling)
-            image(self.lvls[0],0,0,100,100)
-            image(self.answers[0],self.w//5.5,self.ceiling*3)
-            image(self.answers[1],self.w//5.5,self.ground//1.2)
-            image(self.answers[2],self.w//5.7*3,self.ceiling*3)
-            image(self.answers[3],self.w//5.7*3,self.ground//1.2)
+        self.level()
 
-        else:
-            pass
-
+        
+    def level(self):
+        image(self.lvls[self.lvlNum],0,0,100,100)
+        if self.lvlNum == 0:
+            image(self.qs[self.lvlNum],self.w//2-(216//2),self.ceiling)
+            image(self.answers[self.lvlNum*4+0],self.w//5.5,self.ceiling*3)
+            image(self.answers[self.lvlNum*4+1],self.w//5.5,self.ground//1.2)
+            image(self.answers[self.lvlNum*4+2],self.w//5.7*3,self.ceiling*3)
+            image(self.answers[self.lvlNum*4+3],self.w//5.7*3,self.ground//1.2)
+        if self.lvlNum == 1:
+            image(self.qs[self.lvlNum],self.w//2-(250//2),self.ceiling)
+            image(self.answers[self.lvlNum*4+0],self.w//5.5+50,self.ceiling*3)
+            image(self.answers[self.lvlNum*4+1],self.w//5.5+50,self.ground//1.2)
+            image(self.answers[self.lvlNum*4+2],self.w//5.7*3+150,self.ceiling*3)
+            image(self.answers[self.lvlNum*4+3],self.w//5.7*3+150,self.ground//1.2)
+        if self.lvlNum == 2:
+            image(self.qs[self.lvlNum],self.w//2-(330//2),self.ceiling)
+            image(self.helpingImg,375,190)
+            image(self.answers[self.lvlNum*4+0],self.w//5.5,self.ceiling*3)
+            image(self.answers[self.lvlNum*4+1],self.w//5.5,self.ground//1.2)
+            image(self.answers[self.lvlNum*4+2],self.w//5.7*3+200,self.ceiling*3)
+            image(self.answers[self.lvlNum*4+3],self.w//5.7*3+200,self.ground//1.2)
+        if self.lvlNum == 3:
+            image(self.qs[self.lvlNum],self.w//2-(330//2),self.ceiling)
+            image(self.helpingImg,375,190)
+            image(self.answers[self.lvlNum*4+0],self.w//5.5,self.ceiling*3)
+            image(self.answers[self.lvlNum*4+1],self.w//5.5,self.ground//1.2)
+            image(self.answers[self.lvlNum*4+2],self.w//5.7*3+200,self.ceiling*3)
+            image(self.answers[self.lvlNum*4+3],self.w//5.7*3+200,self.ground//1.2)
     
         
 g = Game()
@@ -63,5 +93,13 @@ def draw():
 def mouseClicked():
     if g.state == 'menu' and g.w//2-80 < mouseX < g.w//2+80 and g.h//2-30 < mouseY < g.h//2+10:
         g.state='play'
-    if g.w//5.5<=mouseX<=g.w//5.5+300 and g.ground//1.2<=mouseY<=g.ground//1.2+150:
-        g.nextLevel = True
+    if g.state != 'menu'and g.lvlNum==0 and g.w//5.5<=mouseX<=g.w//5.5+300 and g.ground//1.2<=mouseY<=g.ground//1.2+150:
+        #print("works")
+        time.sleep(0.2)
+        g.lvlNum += 1
+    elif g.state != 'menu'and g.lvlNum==1 and g.w//5.5<=mouseX<=g.w//5.5+50+144 and g.ceiling*3<=mouseY<=g.ceiling*3+135:
+        g.lvlNum += 1
+        #print("works")
+    elif g.state != 'menu'and g.lvlNum==2 and g.w//5.5<=mouseX<=g.w//5.5+50+104 and g.ceiling*3<=mouseY<=g.ceiling*3+106:
+        #g.lvlNum += 1
+        print("works")

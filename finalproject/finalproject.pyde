@@ -1,6 +1,6 @@
-add_library('sound')
 import os, time
 path = os.getcwd()
+add_library('sound')
 
 class Game:
     def __init__(self):
@@ -8,21 +8,20 @@ class Game:
         self.h = 600
         self.ground = 600-100
         self.ceiling = 600-550
-        self.state = "menu"
-        self.clicked = False
+        self.state = "start"
         self.lvls=[]
         self.qs=[]
         self.answers=[]
-        self.game= False
         self.bgImg = loadImage(path+"/images/background.png") 
         self.lvlNum = 0
         self.gameOverImg = loadImage(path+"/images/ending.gif")
-        self.nextLvlImg = loadImage(path+"/images/ending4.jpg")
-        self.gameOver = 0
+        self.winImg = loadImage(path+"/images/ending4.png")
+        #self.winImg2 = loadImage(path+"/images/congratss.png")
         self.helpingImg = loadImage(path+"/images/pizza.png")
-        self.titleImg = loadImage(path+"/images/title.png")
-
-
+        self.openingImg = loadImage(path+"/images/opening.png")
+        self.loseSound = SoundFile (this,path+"/images/lose.mp3")
+        self.winSound = SoundFile(this, path+"/images/win.mp3")
+        self.backgroundSound = SoundFile (this, path+"/images/backgroundMusic.mp3")
         
     def createGame(self):
         for i in range(10): 
@@ -30,13 +29,8 @@ class Game:
             self.qs.append(loadImage(path+'/images/question'+str(i+1)+'.png'))
             for j in range(4):
                 self.answers.append(loadImage(path+'/images/q'+str(i+1)+'a'+str(j+1)+'.png'))
-            self.nextlvlMusic= SoundFile(this,path+"/images/win.mp3")
+        self.backgroundSound.play()
     def display(self):
-        #if self.gameOver == 1:
-         #   image(g.bgImg, 0,0)
-          #  image(self.gameOverImg,200,200)
-            #time.sleep(5)
-            #g.state = 'menu'
         self.level()
 
         
@@ -48,7 +42,6 @@ class Game:
             image(self.answers[self.lvlNum*4+1],self.w//5.5,self.ground//1.2)
             image(self.answers[self.lvlNum*4+2],self.w//5.7*3,self.ceiling*3)
             image(self.answers[self.lvlNum*4+3],self.w//5.7*3,self.ground//1.2)
-           
         if self.lvlNum == 1:
             image(self.qs[self.lvlNum],self.w//2-(250//2),self.ceiling)
             image(self.answers[self.lvlNum*4+0],self.w//5.5+50,self.ceiling*3)
@@ -62,7 +55,6 @@ class Game:
             image(self.answers[self.lvlNum*4+1],self.w//5.5,self.ground//1.2)
             image(self.answers[self.lvlNum*4+2],self.w//5.7*3+200,self.ceiling*3)
             image(self.answers[self.lvlNum*4+3],self.w//5.7*3+200,self.ground//1.2)
-            #self.nextlvlMusic.play()
         if self.lvlNum == 3:
             image(self.qs[self.lvlNum],self.w//2-(180//2),self.ceiling)
             image(self.answers[self.lvlNum*4+0],self.w//5.5,self.ceiling*3)
@@ -75,14 +67,25 @@ class Game:
             image(self.answers[self.lvlNum*4+1],self.w//5.5+60,self.ground//1.2-50)
             image(self.answers[self.lvlNum*4+2],self.w//5.7*3+100,self.ceiling*3)
             image(self.answers[self.lvlNum*4+3],self.w//5.7*3+100,self.ground//1.2-50)
-    
-    def gameover(self):
-        self.state = "done"
-        self.game = True
-        return
-        
-    
-        
+        if self.lvlNum == 5:
+            image(self.qs[self.lvlNum],self.w//2-312,self.ceiling)
+            image(self.answers[self.lvlNum*4+0],self.w//9+60,self.ceiling*3,150,203)
+            image(self.answers[self.lvlNum*4+1],self.w//9+300,self.ceiling*3,150,203)
+            image(self.answers[self.lvlNum*4+2],self.w//9+500,self.ceiling*3,150,203)
+            image(self.answers[self.lvlNum*4+3],self.w//9+700,self.ceiling*3,150,203)
+        if self.lvlNum == 6:
+            image(self.qs[self.lvlNum],self.w//2-312,self.ceiling)
+            image(self.answers[self.lvlNum*4+0], self.w//9,self.ceiling*2+100, 300,300)
+            image(self.answers[self.lvlNum*4+1], self.w//2 +100, self.ceiling*3+200,200,200)
+            image(self.answers[self.lvlNum*4+2], self.w//2 +100, self.ceiling*3,200,200)
+            image(self.answers[self.lvlNum*4+3], self.w//2 +300, self.ceiling*3,200,200)
+
+
+            
+
+   
+            
+            
         
 g = Game()
 def setup():
@@ -92,45 +95,143 @@ def setup():
 
 def draw():
     image(g.bgImg, 0,0)
-    if g.state=='menu':
-        background(0)
+    if g.state == "start":
+        background(234,29,44)
+        image(g.openingImg,250,0)
+        textSize(20)
+        text("Press anywhere",10,g.h-20)
+        #time.sleep(2)
+        #g.state="menu"  
+              
+    elif g.state=='menu':
+        background(234,29,44)
         if g.state == 'menu' and g.w//2-80 < mouseX < g.w//2+80 and g.h//2-30 < mouseY < g.h//2+10:
-            fill(219,112,147)
+            fill(0)
         else:
             fill(255)
         textSize(32)
         text("Play Game",g.w//2-80,g.h//2)
         noFill()
-        stroke(0)
+        stroke(234,29,44)
         rect(g.w//2-80, g.h//2-30,160,40)
+    
     elif g.state == 'play':
-        # image(g.titleImg,200, 200)
-        # g.display()
         image(g.bgImg,g.w,g.h)
         g.display()
-    elif g.state == "done":
-        print("the fuck")
-        image(g.gameOverImg,g.w,g.h)
-        g.display()
+        
+    elif g.state == "game over":
+        background(255,255,255)
+        image(g.gameOverImg,300,100)
+        #g.state = 'menu'
+        #g.display()
+        
+    elif g.state == "win":
+        background(255,255,255)
+        image(g.winImg,300,180)
+        #image(g.winImg2,200,400)
+        
+    elif g.state == "play again?":
+        background(234,29,44)
+        textSize(50)
+        text("Play again?",g.w//2-110,g.h//2-100)
+        if  g.w//2+110 < mouseX < g.w//2+110+70 and g.h//2+20 < mouseY < g.h//2+20+40:
+            fill(0,0,255)
+        elif g.w//2-130 < mouseX < g.w//2-130+80 and g.h//2+20 < mouseY < g.h//2+20+40:
+            fill(0,255,0)
+        else:
+            fill(255)
+            
+        textSize(30)
+        
+        text("No.",g.w//2+120,g.h//2+50)
+        noFill()
+        stroke(234,29,44)
+        rect(g.w//2+110,g.h//2+20,70,40)
+        
+        text("Yes!",g.w//2-120,g.h//2+50)        
+        noFill()
+        stroke(234,29,44)
+        
+        rect(g.w//2-130,g.h//2+20,80,40)
+                   
+    
+        
 def mouseClicked():
-    if g.state == 'menu' and g.w//2-80 < mouseX < g.w//2+80 and g.h//2-30 < mouseY < g.h//2+10:
+    if g.state == "start":
+        if mouseClicked:
+            g.state = 'menu'
+    elif g.state == 'menu' and g.w//2-80 < mouseX < g.w//2+80 and g.h//2-30 < mouseY < g.h//2+10:
         g.state='play'
-    if g.state != 'menu' and g.lvlNum==0 :
-        if g.w//5.5<=mouseX<=g.w//5.5+300 and g.ground//1.2<=mouseY<=g.ground//1.2+150:
-            print("works1")
-            g.lvlNum += 1
-    elif g.state != 'menu'and g.lvlNum==1 and g.w//5.5<=mouseX<=g.w//5.5+50+144 and g.ceiling*3<=mouseY<=g.ceiling*3+135:
-        g.lvlNum += 1
-        print("works2")
-    elif g.state != 'menu'and g.lvlNum==2 and g.w//5.5<=mouseX<=g.w//5.5+50+104 and g.ceiling*3<=mouseY<=g.ceiling*3+106:
-        g.lvlNum += 1
-        #print("works")
-    elif g.state != 'menu'and g.lvlNum==3 and ((g.w//5.5<=mouseX<=g.w//5.5+187 and g.ground//1.2-50<=mouseY<=g.ground//1.2-50+187) or (g.w//5.7*3+100<=mouseX<=g.w//5.7*3+100+200 and g.ceiling*3<=mouseY<=g.ceiling*3+178)):
-        #print("works")
-        g.lvlNum += 1
-    elif g.state != 'menu'and g.lvlNum==4 and g.w//5.7*3+100<=mouseX<=g.w//5.7*3+100+145 and g.ground//1.2-50<=mouseY<=g.ground//1.2-50+134:
-        g.state = "menu"
-        g.lvlNum = 0
-    else:
-        g.game = "done"
-        #print(g.game)
+    elif g.state == 'play':
+        if g.lvlNum==0:
+            if g.w//5.5<=mouseX<=g.w//5.5+300 and g.ground//1.2<=mouseY<=g.ground//1.2+150:
+                #print("works")
+                g.winSound.play()
+                g.lvlNum += 1
+            else:
+                g.loseSound.play()
+                g.state ="game over"
+        elif g.lvlNum==1:
+            if g.w//5.5<=mouseX<=g.w//5.5+50+144 and g.ceiling*3<=mouseY<=g.ceiling*3+135:
+                g.winSound.play()
+                g.lvlNum += 1
+                #print("works")
+            else:
+                g.loseSound.play()
+                g.state ="game over"
+        elif g.lvlNum==2:
+            if g.w//5.5<=mouseX<=g.w//5.5+50+104 and g.ceiling*3<=mouseY<=g.ceiling*3+106:
+                g.winSound.play()
+                g.lvlNum += 1
+                #print("works")
+            else:
+                g.loseSound.play()
+                g.state ="game over"
+        elif g.lvlNum==3:
+            if (g.w//5.5<=mouseX<=g.w//5.5+187 and g.ground//1.2-50<=mouseY<=g.ground//1.2-50+187) or (g.w//5.7*3+100<=mouseX<=g.w//5.7*3+100+200 and g.ceiling*3<=mouseY<=g.ceiling*3+178):
+                g.winSound.play()
+                #print("works")
+                g.lvlNum += 1
+            else:
+                g.loseSound.play()
+                g.state ="game over"
+        elif g.lvlNum==4: 
+            if g.w//5.7*3+100<=mouseX<=g.w//5.7*3+100+145 and g.ground//1.2-50<=mouseY<=g.ground//1.2-50+134:
+                g.winSound.play()
+                # g.state = "win"
+                g.lvlNum += 1
+            else:
+                g.winSound.play()
+                g.loseSound.play()
+                g.state ="game over"
+        elif g.lvlNum==5: 
+            if g.w//9+60<=mouseX<=g.w//9+60+150 and g.ceiling*3<=mouseY<=g.ceiling*3+203:
+                g.winSound.play()
+                g.lvlNum+=1
+            else:
+                g.loseSound.play()
+                g.state ="game over"
+        elif g.lvlNum==6:
+            if g.w//2+100<=mouseX<=g.w//2+100+200 and g.ceiling*3+200<=mouseY<=g.ceiling*3+200+200:
+               g.winSound.play()
+               image(g.winImg,g.w,g.h)
+               
+            else:
+                g.loseSound.play()
+                g.state = "game over"
+
+    elif g.state == "game over":
+        g.loseSound.play()
+        if mouseClicked:
+            g.state = 'play again?'
+    elif g.state == "play again?":
+        if g.w//2+110 < mouseX < g.w//2+110+70 and g.h//2+20 < mouseY < g.h//2+20+40:
+            exit()
+        elif g.w//2-130 < mouseX < g.w//2-130+80 and g.h//2+20 < mouseY < g.h//2+20+40:
+            g.lvlNum = 0
+            g.state = "play"
+    elif g.state == "win":
+        g.winSound.play()
+        if mouseClicked:
+            g.state = 'play again?'
+    
